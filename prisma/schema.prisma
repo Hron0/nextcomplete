@@ -2,11 +2,38 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "postgresql"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model users {
+  id String @id @db.Uuid
+  name String
+  email String @unique
+  password String 
+}
+
+model invoices {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  customer_id String @default(uuid())
+  amount Int
+  status String @db.VarChar(255)
+  date String //Да поебать мне, @db.Date не работает,уёбище
+}
+
+model customers {
+  id String @id @db.Uuid
+  name String @db.VarChar(255)
+  email String @db.VarChar(255)
+  image_url String @db.VarChar(255)
+}
+
+model revenue {
+  month String @db.VarChar(4) @unique
+  revenue Int
 }
