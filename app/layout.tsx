@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './ui/globals.css'
+import { cn } from './../lib/utils';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(
+        inter.className,
+        'bg-[#c5ecf0]'
+      )}>{children}</body>
     </html>
   )
 }

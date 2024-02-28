@@ -1,11 +1,12 @@
 import { NextPage } from 'next'
 
-interface Props {}
 
-const Page: NextPage<Props> = ({}) => {
-  return <div>
-    Dashboard Page
-  </div>
+const Page = () => {
+  return (
+    <div>
+      <h1 className='text-white text-xl'>You are not logged in Dog</h1>
+    </div>
+  )
 }
 
 export default Page

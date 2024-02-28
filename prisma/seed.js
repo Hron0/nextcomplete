@@ -15,7 +15,7 @@ const seedUsers = async (prismaCl) => {
         const InsertedUsers = await Promise.all(
             users.map(async (user) => {
                 let hashedPassword = await bcrypt.hash(user.password, 10)
-                await prisma.users.create({
+                await prisma.User.create({
                     data: {
                         id: user.id,
                         name: user.name,
@@ -105,7 +105,7 @@ const seedRevenue = async (prismaCl) => {
 async function main() {
     const prisma = new PrismaClient
 
-    await seedUsers(prisma),
+    await seedUsers(prisma)
     await seedCustomers(prisma),
     await seedInvoices(prisma),
     await seedRevenue(prisma)
