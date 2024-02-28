@@ -1,7 +1,6 @@
 
 export const publicRoutes = [
     "/",
-    "/settings"
 ]
 
 export const authRoutes = [

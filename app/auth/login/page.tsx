@@ -14,7 +14,6 @@ import {
     FormLabel,
     FormMessage,
     FormError,
-    FormSuccess
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import CardWrapper from "@/app/ui/CardWrapperComps/CardWrapper"
@@ -23,7 +22,6 @@ import { Login } from "@/lib/actions"
 
 const Page = () => {
     const [error, setError] = useState<string | undefined>("")
-    const [success, setSuccess] = useState<string | undefined>("")
     const [isPending, startTransition] = useTransition()
 
     const form = useForm<z.infer<typeof LoginSchema>>({
@@ -36,13 +34,11 @@ const Page = () => {
 
     const handleLogin = (values: z.infer<typeof LoginSchema>) => {
         setError("")
-        setSuccess("")
 
         startTransition(() => {
             Login(values)
             .then((data) => { 
                 setError(data?.error)
-                setSuccess(data?.success)
              })
         })
     }
@@ -93,7 +89,6 @@ const Page = () => {
                         />
                     </div>
                     <FormError message={error} />
-                    <FormSuccess message={success}/>
                     <Button type="submit" className="w-full" disabled={isPending}>
                         Login
                     </Button>

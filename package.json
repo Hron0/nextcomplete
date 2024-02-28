@@ -20,6 +20,7 @@
     "@vercel/postgres": "^0.5.1",
     "add": "^2.0.6",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "embla-carousel-react": "^8.0.0-rc19",
@@ -38,6 +39,7 @@
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.10.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
