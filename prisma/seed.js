@@ -7,7 +7,7 @@ const {
 } = require('./placeholder.ts')
 const bcrypt = require('bcrypt')
 
-const prisma = new PrismaClient
+const prisma = new PrismaClient()
 
 const seedUsers = async (prismaCl) => {
     const prisma = prismaCl
@@ -38,7 +38,7 @@ const seedCustomers = async (prismaCl) => {
     try {
         const insertedCustomers = await Promise.all(
             customers.map(async (customer) => {
-                await prisma.customers.create({
+                await prisma.customer.create({
                     data: {
                         id: customer.id,
                         name: customer.name,
@@ -62,7 +62,7 @@ const seedInvoices = async (prismaCl) => {
     try {
         const insertedInvoices = await Promise.all(
             invoices.map(async (invoice) => {
-                await prisma.invoices.create({
+                await prisma.Invoice.create({
                     data: {
                         customer_id: invoice.customer_id,
                         amount: invoice.amount,
@@ -105,7 +105,7 @@ const seedRevenue = async (prismaCl) => {
 async function main() {
     const prisma = new PrismaClient
 
-    await seedUsers(prisma)
+/*     await seedUsers(prisma) */
     await seedCustomers(prisma),
     await seedInvoices(prisma),
     await seedRevenue(prisma)

@@ -6,14 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "mysql"
+  url       = env("MYSQL_URL") // uses connection pooling
 }
 
-enum AccountType {
-  User
-  Admin
+enum UserRole {
+  USER
+  ADMIN
 }
 
 model User {
@@ -22,6 +21,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   password      String?
+  role          UserRole  @default(USER)
   image         String?
   accounts      Account[]
 }
@@ -45,22 +45,22 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model invoices {
-  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+model Invoice {
+  id          String @id @default(uuid())
   customer_id String @default(uuid())
   amount      Int
-  status      String @db.VarChar(255)
-  date        String //Да поебать мне, @db.Date не работает,уёбище
+  status      String
+  date        String
 }
 
-model customers {
-  id        String @id @db.Uuid
-  name      String @db.VarChar(255)
-  email     String @db.VarChar(255)
-  image_url String @db.VarChar(255)
+model Customer {
+  id        String @id @default(uuid())
+  name      String
+  email     String
+  image_url String
 }
 
-model revenue {
-  month   String @unique @db.VarChar(4)
+model Revenue {
+  month   String @unique
   revenue Int
 }
