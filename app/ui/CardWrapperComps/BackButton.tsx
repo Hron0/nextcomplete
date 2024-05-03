@@ -1,11 +1,12 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { usePathname } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 
 const BackButton = () => {
-    const router = usePathname()
-    const isLogin = router === "/auth/login"
+    const searchParams = useSearchParams();
+    const isLogin = searchParams.get('type') == "login"
+    console.log(searchParams.get('type'))
 
     return (
         <Button
@@ -14,7 +15,7 @@ const BackButton = () => {
             className="font-normal w-full"
             asChild
         >
-            <Link href={isLogin ? '/auth/register' : '/auth/login'}>
+            <Link href={isLogin ? { pathname: "/auth", query: { type: 'registration' } } : { pathname: "/auth", query: { type: 'login' } }}>
                 {isLogin ? "Нет аккаунта?" : "Уже зарегестрированы?"}
             </Link>
         </Button>

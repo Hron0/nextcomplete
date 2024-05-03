@@ -6,24 +6,26 @@ generator client {
 }
 
 datasource db {
-  provider  = "mysql"
-  url       = env("MYSQL_URL") // uses connection pooling
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  // uncomment next line if you use Prisma <5.10
+  directUrl = env("DATABASE_URL_UNPOOLED")
 }
 
-enum UserRole {
-  USER
-  ADMIN
+enum AccountType {
+  User
+  Admin
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String      @id @default(uuid())
   name          String?
-  email         String?   @unique
+  email         String?     @unique
   emailVerified DateTime?
   password      String?
-  role          UserRole  @default(USER)
   image         String?
   accounts      Account[]
+  role          AccountType @default(User)
 }
 
 model Account {
@@ -45,22 +47,22 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Invoice {
-  id          String @id @default(uuid())
+model invoices {
+  id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   customer_id String @default(uuid())
   amount      Int
-  status      String
-  date        String
+  status      String @db.VarChar(255)
+  date        String //Да поебать мне, @db.Date не работает,уёбище
 }
 
-model Customer {
-  id        String @id @default(uuid())
-  name      String
-  email     String
-  image_url String
+model customers {
+  id        String @id @db.Uuid
+  name      String @db.VarChar(255)
+  email     String @db.VarChar(255)
+  image_url String @db.VarChar(255)
 }
 
-model Revenue {
-  month   String @unique
+model revenue {
+  month   String @unique @db.VarChar(4)
   revenue Int
 }
