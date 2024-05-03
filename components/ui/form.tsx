@@ -1,7 +1,7 @@
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
-import { Slot } from "@radix-ui/react-slot"
 import {ExclamationTriangleIcon, CheckCircledIcon} from "@radix-ui/react-icons"
+import { Slot } from "@radix-ui/react-slot"
 import {
   Controller,
   ControllerProps,
@@ -200,6 +200,6 @@ export {
   FormDescription,
   FormMessage,
   FormField,
-  FormError,
-  FormSuccess
+  FormSuccess,
+  FormError
 }

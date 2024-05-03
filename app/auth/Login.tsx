@@ -2,88 +2,66 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { RegisterSchema } from '@/schemas/index'
+import { LoginSchema } from '@/schemas/index'
 import { useState, useTransition } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormError,
     FormField,
     FormItem,
     FormLabel,
     FormMessage,
-    FormSuccess,
+    FormError,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import CardWrapper from "@/app/ui/CardWrapperComps/CardWrapper"
-import { Register } from "@/lib/actions"
+import { Login } from "@/lib/actions"
 
 
-const Page = () => {
+export const LoginPage = () => {
     const [error, setError] = useState<string | undefined>("")
-    const [success, setSuccess] = useState<string | undefined>("")
     const [isPending, startTransition] = useTransition()
 
-    const form = useForm<z.infer<typeof RegisterSchema>>({
-        resolver: zodResolver(RegisterSchema),
+    const form = useForm<z.infer<typeof LoginSchema>>({
+        resolver: zodResolver(LoginSchema),
         defaultValues: {
-            name: "",
             email: "",
             password: "",
         }
     })
 
-    const handleRegister = (values: z.infer<typeof RegisterSchema>) => {
+    const handleLogin = (values: z.infer<typeof LoginSchema>) => {
         setError("")
-        setSuccess("")
 
         startTransition(() => {
-            Register(values)
-                .then((data) => { 
-                    setError(data?.error)
-                    setSuccess(data?.success)
-                 })
+            Login(values)
+            .then((data) => { 
+                setError(data?.error)
+             })
         })
     }
 
     return (
-        <CardWrapper label="Регистрация">
+        <CardWrapper label="Вход в аккаунт">
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleRegister)}
+                    onSubmit={form.handleSubmit(handleLogin)}
                     className="space-y-6">
                     <div className="space-y-4">
                         <FormField
-                            name="name"
                             control={form.control}
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Name</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            {...field}
-                                            placeholder="Your UserName"
-                                            type="text"
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <FormField
                             name="email"
-                            control={form.control}
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input
                                             {...field}
-                                            placeholder="email@mail.com"
+                                            placeholder="Your email here"
                                             type="email"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -92,8 +70,8 @@ const Page = () => {
                         />
 
                         <FormField
-                            name="password"
                             control={form.control}
+                            name="password"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormLabel>Password</FormLabel>
@@ -102,6 +80,7 @@ const Page = () => {
                                             {...field}
                                             placeholder="******"
                                             type="password"
+                                            disabled={isPending}
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -110,14 +89,11 @@ const Page = () => {
                         />
                     </div>
                     <FormError message={error} />
-                    <FormSuccess message={success}/>
                     <Button type="submit" className="w-full" disabled={isPending}>
-                        Register
+                        Login
                     </Button>
                 </form>
             </Form>
         </CardWrapper>
     )
 }
-
-export default Page
