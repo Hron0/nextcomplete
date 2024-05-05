@@ -3,6 +3,7 @@ import type { NextAuthConfig } from "next-auth"
 import {LoginSchema} from "@/schemas/index"
 import {getUserByEmail} from "@/lib/data/user"
 import bcrypt from 'bcryptjs';
+import { getUserById } from "./lib/data/user";
 
 export default {
   providers: [Credentials({
@@ -26,4 +27,27 @@ export default {
       return null
     }
   })],
+  callbacks: {
+    async session({ token, session, user }) {
+        if (token.sub && session.user) {
+            session.user.id = token.sub
+        }
+
+        if (token.role && session.user) {
+            session.user.role = token.role as "User" | "Admin";
+        }
+
+        return session
+    },
+    async jwt({ token }) {
+        if (!token.sub) return token
+
+        const existingUser = await getUserById(token.sub)
+        if (!existingUser) return token
+
+        token.role = existingUser.role
+
+        return token
+    }
+}
 } satisfies NextAuthConfig
