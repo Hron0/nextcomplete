@@ -15,8 +15,6 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth
   const isAdmin = req.auth?.user.role === "Admin"
 
-console.log(isAdmin)
-console.log(req.auth)
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix)
   const isAdminRoute = nextUrl.pathname.startsWith(adminRoutes)
